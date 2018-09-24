@@ -22,8 +22,8 @@
     ports:
       - '{{ mongodb_port }}:27017'
     env:
-      MONGO_INITDB_ROOT_USERNAME: '{{ mongodb_user }}'
-      MONGO_INITDB_ROOT_PASSWORD: '{{ mongodb_password }}'
+      MONGO_INITDB_ROOT_USERNAME: '{{ mongodb_user | default(omit)  }}'
+      MONGO_INITDB_ROOT_PASSWORD: '{{ mongodb_password | default(omit)  }}'
   register: mongodb_container
 
 - name: Wait until mongodb starts up
