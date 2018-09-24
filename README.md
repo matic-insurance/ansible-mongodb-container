@@ -20,25 +20,22 @@ Role Variables
 Here is the list of default variables with default values:
 
 ```
-mongodb_docker_image: mongodb
-mongodb_docker_image_tag: 9.5
+mongodb_docker_image: mongo
+mongodb_docker_image_tag: 4
 mongodb_container_name: 'mongodb'
-mongodb_port: 5432
+mongodb_port: 27017
+
+container_memory_limit: 256m
 ```
 
-Also you can set optional variables to create initial user/database.
+Also you can set optional variables to create initial user
 
 ```
 mongodb_user: db_user
 mongodb_password: db_password
-mongodb_database: my_db
-mongodb_schema: my_db_schema
-mongodb_networks: [
-  { name: backend }
-]
 ```
 
-Docker tuning can be done with this variables
+Docker memory tuning can be done with this variables
 ```
 container_memory_limit: 512m
 ```
@@ -57,7 +54,6 @@ Example Playbook
           tags: ['database]
           mongodb_user: 'db_user'
           mongodb_password: 'db_password' # better put to Vault
-          mongodb_database: 'my_db'
 
 License
 -------
