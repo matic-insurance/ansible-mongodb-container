@@ -6,6 +6,13 @@ mongodb_port: 27017
 
 container_memory_limit: 256m
 
+#Authentication
+mongodb_auth: false
+
+mongodb_admin_user:
+mongodb_admin_password:
+
+mongodb_db:
 mongodb_user:
 mongodb_password:
 

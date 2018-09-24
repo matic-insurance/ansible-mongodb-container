@@ -17,18 +17,20 @@
     restart_policy: always
     state: started
     memory: '{{ container_memory_limit | default(omit) }}'
+    command: '--bind_ip_all'
     volumes_from:
       - '{{ mongodb_container_name }}-data'
     ports:
       - '{{ mongodb_port }}:27017'
-    env:
-      MONGO_INITDB_ROOT_USERNAME: '{{ mongodb_user | default(omit)  }}'
-      MONGO_INITDB_ROOT_PASSWORD: '{{ mongodb_password | default(omit)  }}'
+#    env:
+#      MONGO_INITDB_ROOT_USERNAME: '{{ mongodb_user | default(omit)  }}'
+#      MONGO_INITDB_ROOT_PASSWORD: '{{ mongodb_password | default(omit)  }}'
   register: mongodb_container
 
 - name: Wait until mongodb starts up
-  wait_for: port={{ mongodb_port }} delay=5
-  when: mongodb_container.changed
+  wait_for:
+    port: '{{ mongodb_port }}'
+    delay: 5
 
 - name: Ensure db client packages are installed (Debian/Ubuntu)
   apt: name={{item}} state=present

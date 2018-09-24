@@ -1,10 +1,8 @@
 ---
-- hosts: localhost
+- hosts: travis
+  become: yes
   connection: local
   roles:
     - role: ../..
-      mongodb_container_name: 'test-mongodb'
-      mongodb_user: 'test_user'
-      mongodb_password: 'test_password'
-      mongodb_database: 'test_db'
-      mongodb_port: '5678'
+      mongodb_container_name: 'mongo_no_auth'
+      mongodb_port: '2701'
