@@ -1,0 +1,10 @@
+---
+- hosts: localhost
+  connection: local
+  roles:
+    - role: ../..
+      mongodb_container_name: 'test-mongodb'
+      mongodb_user: 'test_user'
+      mongodb_password: 'test_password'
+      mongodb_database: 'test_db'
+      mongodb_port: '5678'

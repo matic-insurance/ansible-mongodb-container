@@ -1,0 +1,37 @@
+---
+- name: Pull MongoDb image
+  docker_image:
+    name: '{{ mongodb_docker_image }}'
+    tag: '{{ mongodb_docker_image_tag }}'
+
+- name: Create data container
+  docker_container:
+    name: '{{ mongodb_container_name }}-data'
+    image: '{{ mongodb_docker_image }}:{{ mongodb_docker_image_tag }}'
+    state: present
+
+- name: Run mongodb container
+  docker_container:
+    name: '{{ mongodb_container_name }}'
+    image: '{{ mongodb_docker_image }}:{{ mongodb_docker_image_tag }}'
+    restart_policy: always
+    state: started
+    memory: '{{ container_memory_limit | default(omit) }}'
+    volumes_from:
+      - '{{ mongodb_container_name }}-data'
+    ports:
+      - '{{ mongodb_port }}:27017'
+    env:
+      MONGO_INITDB_ROOT_USERNAME: '{{ mongodb_user }}'
+      MONGO_INITDB_ROOT_PASSWORD: '{{ mongodb_password }}'
+  register: mongodb_container
+
+- name: Wait until mongodb starts up
+  wait_for: port={{ mongodb_port }} delay=5
+  when: mongodb_container.changed
+
+- name: Ensure db client packages are installed (Debian/Ubuntu)
+  apt: name={{item}} state=present
+  with_items:
+    - mongodb-clients
+  when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'

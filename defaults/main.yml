@@ -1,0 +1,10 @@
+---
+mongodb_docker_image: mongo
+mongodb_docker_image_tag: 4
+mongodb_container_name: 'mongodb'
+
+mongodb_port: 27017
+mongodb_user: app
+mongodb_password: 12345678
+
+container_memory_limit: 256m
