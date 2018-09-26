@@ -21,5 +21,5 @@
       mongodb_admin_password: 'admin_pass'
       mongodb_db: 'application'
       mongodb_user: 'app'
-      mongodb_password: 'user_pass'
+      mongodb_password: 'app_pass'
       mongodb_port: '2703'
