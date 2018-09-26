@@ -1,4 +1,16 @@
 ---
+- name: 'Configuration: Environment with Auth'
+  set_fact:
+    mongodb_env:
+      MONGO_INITDB_ROOT_USERNAME: '{{ mongodb_admin_user | mandatory }}'
+      MONGO_INITDB_ROOT_PASSWORD: '{{ mongodb_admin_password | mandatory }}'
+  when: mongodb_auth
+
+- name: 'Configuration: Environment without Auth'
+  set_fact:
+    mongodb_env: {}
+  when: not mongodb_auth
+
 - name: Pull MongoDb image
   docker_image:
     name: '{{ mongodb_docker_image }}'
@@ -22,9 +34,7 @@
       - '{{ mongodb_container_name }}-data'
     ports:
       - '{{ mongodb_port }}:27017'
-#    env:
-#      MONGO_INITDB_ROOT_USERNAME: '{{ mongodb_user | default(omit)  }}'
-#      MONGO_INITDB_ROOT_PASSWORD: '{{ mongodb_password | default(omit)  }}'
+    env: '{{ mongodb_env }}'
   register: mongodb_container
 
 - name: Wait until mongodb starts up
