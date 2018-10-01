@@ -1,10 +1,25 @@
 ---
-- hosts: localhost
+- hosts: travis
+  become: yes
   connection: local
   roles:
     - role: ../..
-      mongodb_container_name: 'test-mongodb'
-      mongodb_user: 'test_user'
-      mongodb_password: 'test_password'
-      mongodb_database: 'test_db'
-      mongodb_port: '5678'
+      mongodb_container_name: 'mongo_no_auth'
+      mongodb_port: '2701'
+
+    - role: ../..
+      mongodb_container_name: 'mongo_admin_auth'
+      mongodb_auth: true
+      mongodb_admin_user: 'admin'
+      mongodb_admin_password: 'admin_pass'
+      mongodb_port: '2702'
+
+    - role: ../..
+      mongodb_container_name: 'mongo_user_auth'
+      mongodb_auth: true
+      mongodb_admin_user: 'admin'
+      mongodb_admin_password: 'admin_pass'
+      mongodb_db: 'application'
+      mongodb_user: 'app'
+      mongodb_password: 'app_pass'
+      mongodb_port: '2703'

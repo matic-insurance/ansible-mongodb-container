@@ -2,8 +2,10 @@
 language: python
 python: "2.7"
 
-# Use the new container infrastructure
-sudo: false
+sudo: required
+
+services:
+  - docker
 
 # Install ansible
 addons:
@@ -15,15 +17,25 @@ install:
   # Install ansible
   - pip install ansible
 
-  # Check ansible version
-  - ansible --version
+  # Install ansible dependencies
+  - ansible-playbook tests/setup.yml -i tests/travis.hosts --connection=local
 
   # Create ansible.cfg with correct roles_path
-  - printf '[defaults]\nroles_path=../' >ansible.cfg
+  - printf '[defaults]\nroles_path=../\nhost_key_checking = False' >ansible.cfg
 
 script:
   # Basic role syntax check
-  - ansible-playbook tests/test.yml -i tests/inventory --syntax-check
+  - ansible-playbook tests/test.yml -i tests/travis.hosts --syntax-check --connection=local
+
+  # Run role
+  - ansible-playbook tests/test.yml -i tests/travis.hosts --connection=local
+
+  # Check mongo
+  - bash -x tests/verify_auth_failure.sh
+  - bash -x tests/verify_auth_success.sh
+
+  # Run Idempotent test
+  - ansible-playbook tests/test.yml -i tests/travis.hosts --connection=local | grep -q 'changed=0.*failed=0'
 
 notifications:
   webhooks: https://galaxy.ansible.com/api/v1/notifications/
