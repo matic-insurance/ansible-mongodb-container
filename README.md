@@ -66,7 +66,7 @@ Example Playbook
 
     - hosts: database
       roles:
-        - role: matic-insurance.mongodb-container
+        - role: matic-insurance.mongodb_container
           tags: ['database]
           mongodb_container_name: 'mongodb'
           mongodb_port: 27017
