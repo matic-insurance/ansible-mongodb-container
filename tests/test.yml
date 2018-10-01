@@ -6,6 +6,7 @@
     - role: ../..
       mongodb_container_name: 'mongo_no_auth'
       mongodb_port: '2701'
+      mongodb_install_cli: true
 
     - role: ../..
       mongodb_container_name: 'mongo_admin_auth'
