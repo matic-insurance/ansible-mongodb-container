@@ -10,7 +10,7 @@ It uses data container for persistence, which is more elegant way comparing to h
 Requirements
 ------------
 
-Ubuntu 14.04 is tested.
+Ubuntu 14.04 and 16.04 is tested.
 
 This role uses Ansible's docker module, so requirements are [the same](https://docs.ansible.com/ansible/docker_image_module.html#requirements-on-host-that-executes-module).
 
@@ -19,26 +19,42 @@ Role Variables
 
 Here is the list of default variables with default values:
 
-```
-mongodb_docker_image: mongo
-mongodb_docker_image_tag: 4
+```yaml
 mongodb_container_name: 'mongodb'
 mongodb_port: 27017
-
-container_memory_limit: 256m
 ```
 
-Also you can set optional variables to create initial user
+This will run mongo container without authentication and expose 27017 port.
+ 
+Authenticaiton is controlled with these settings
 
-```
-mongodb_user: db_user
-mongodb_password: db_password
+```yaml
+# Enable authentication
+mongodb_auth: false
+
+# Admin credentials
+mongodb_admin_user:
+mongodb_admin_password:
+
+# User database
+mongodb_db:
+# User credentials
+mongodb_user:
+mongodb_password:
 ```
 
 Docker memory tuning can be done with this variables
-```
+```yaml
 container_memory_limit: 512m
 ```
+
+Mongo docker image and tag:
+```yaml
+mongodb_docker_image: mongo
+mongodb_docker_image_tag: 4
+```
+
+For more settings look into [defaults/main.yml](defaults/main.yml)
 
 Dependencies
 ------------
@@ -50,10 +66,10 @@ Example Playbook
 
     - hosts: database
       roles:
-        - role: matic-insurance.docker-mongodb
+        - role: matic-insurance.mongodb-container
           tags: ['database]
-          mongodb_user: 'db_user'
-          mongodb_password: 'db_password' # better put to Vault
+          mongodb_container_name: 'mongodb'
+          mongodb_port: 27017
 
 License
 -------

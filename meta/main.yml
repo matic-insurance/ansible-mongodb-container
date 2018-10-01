@@ -1,5 +1,6 @@
 galaxy_info:
   author: Volodymyr Mykhailyk
+  role_name: mongodb-container
   description: Manage and run the MongoDB docker container.
   company: matic-insurance
 

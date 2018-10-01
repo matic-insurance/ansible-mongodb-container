@@ -29,6 +29,9 @@ mongodb_password:
 mongodb_docker_image: mongo
 mongodb_docker_image_tag: 4
 
+# Install mongo cli on docker host
+mongodb_install_cli: false
+
 # Environment variables to be set for container
 mongodb_env: {}
 # Volumes to be mapped for mongo
